@@ -71,6 +71,14 @@ function makeAjaxRequest(searchTerm) {
           }
         });
 
+        // sort by release date
+        albums.sort((b, a) => {
+          var eleA = a.releaseDate;
+          var eleB = b.releaseDate;
+
+          return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
+        });
+
         // console.log(albums);
 
         albums.forEach((album) => {
