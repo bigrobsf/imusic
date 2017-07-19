@@ -2,16 +2,29 @@ p {
   margin-bottom: .25vmin;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .card {
-  border: 1px solid #cccccc;
+  background: #eeeeee;
+  border: 1px solid #eeeeee;
   position: relative;
   display: inline-block;
-  width: 350px;
+  width: 250px;
   margin: 1vmin;
+  padding: 1vmin;
+}
+
+.card:hover {
+  border: 1px solid #cccccc;
 }
 
 .album-cover {
   width: 100px;
   height: 100px;
   margin-bottom: .5vmin;
+}
+
+.album {
 }

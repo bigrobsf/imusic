@@ -20,7 +20,10 @@ $(function() {
 function main() {
   let searchTerm = getSearchTerm();
   console.log("Search term is: ", searchTerm);
-  if (searchTerm) makeAjaxRequest(searchTerm);
+  if (searchTerm) {
+    $('main').children().remove();
+    makeAjaxRequest(searchTerm);
+  }
 }
 
 // gets the search term entered into the search field, clears it, and restores focus
@@ -51,8 +54,8 @@ function makeAjaxRequest(searchTerm) {
           albumInfo.artworkUrl = result.artworkUrl100;
           albumInfo.releaseDate = result.releaseDate.split('T')[0];
           albumInfo.trackCount = result.trackCount;
-          albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
-
+          // albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
+          albumInfo.tracksUrl = result.collectionViewUrl;
           albums.push(albumInfo);
         }
       });
@@ -64,9 +67,9 @@ function makeAjaxRequest(searchTerm) {
         let $infoDiv = $('<div>');
         $infoDiv.addClass('album');
 
-        let $newImg = $('<img>');
-        $newImg.addClass('album-cover');
-        $newImg.attr('src', album.artworkUrl);
+        let $albumImg = $('<img>');
+        $albumImg.addClass('album-cover');
+        $albumImg.attr('src', album.artworkUrl);
 
         let $albumP = $('<p>');
         $albumP.text(album.name);
@@ -81,16 +84,23 @@ function makeAjaxRequest(searchTerm) {
         let $numTracksP = $('<p>');
         $numTracksP.text('Tracks: ' + album.trackCount);
 
-        $infoDiv.append($newImg);
+        $infoDiv.append($albumImg);
         $infoDiv.append($albumP);
         $infoDiv.append($artistP);
         $infoDiv.append($dateP);
         $infoDiv.append($numTracksP);
 
+        let $link = $('<a>');
+        $link.attr('href', album.tracksUrl);
+        $link.attr('target', '_blank');
+        $link.append($infoDiv);
+
         let $cardDiv = $('<div>');
         $cardDiv.addClass('card');
 
-        $cardDiv.append($infoDiv);
+        $cardDiv.append($link);
+
+        // $cardDiv.append($infoDiv);
 
         $('main').append($cardDiv);
       });
