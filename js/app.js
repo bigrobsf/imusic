@@ -37,34 +37,66 @@ function makeAjaxRequest(searchTerm) {
       url: `https://itunes.apple.com/search?term=${searchTerm}&entity=album&limit=25`,
       jsonp: "callback",
       dataType: "jsonp"
-  }).then(function(data) {
-      console.log(data);
+  }).then((data) => {
+      // console.log(data);
       let albums = [];
 
-      for (var i = 0; i < data.results.length; i++) {
-        let info = data.results[i];
-
+      data.results.forEach((result) => {
         // eliminate singles with only one mix
-        if (info.trackCount > 1) {
+        if (result.trackCount > 1) {
           let albumInfo = {};
 
-          albumInfo.name = info.collectionName;
-          albumInfo.artist = info.artistName;
-          albumInfo.artworkUrl = info.artworkUrl100;
-          albumInfo.releaseDate = info.releaseDate.split('T')[0];
-          albumInfo.trackCount = info.trackCount;
-          albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${info.collectionId}&entity=song`;
+          albumInfo.name = result.collectionName;
+          albumInfo.artist = result.artistName;
+          albumInfo.artworkUrl = result.artworkUrl100;
+          albumInfo.releaseDate = result.releaseDate.split('T')[0];
+          albumInfo.trackCount = result.trackCount;
+          albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
 
           albums.push(albumInfo);
         }
+      });
 
-      }
+      // console.log(albums);
 
-      console.log(albums);
-      
+      albums.forEach((album) => {
+        console.log(album);
+        let $infoDiv = $('<div>');
+        $infoDiv.addClass('album');
+
+        let $newImg = $('<img>');
+        $newImg.addClass('album-cover');
+        $newImg.attr('src', album.artworkUrl);
+
+        let $albumP = $('<p>');
+        $albumP.text(album.name);
+        $albumP.css('font-weight', 'bold');
+
+        let $artistP = $('<p>');
+        $artistP.text(album.artist);
+
+        let $dateP = $('<p>');
+        $dateP.text('Released: ' + album.releaseDate);
+
+        let $numTracksP = $('<p>');
+        $numTracksP.text('Tracks: ' + album.trackCount);
+
+        $infoDiv.append($newImg);
+        $infoDiv.append($albumP);
+        $infoDiv.append($artistP);
+        $infoDiv.append($dateP);
+        $infoDiv.append($numTracksP);
+
+        let $cardDiv = $('<div>');
+        $cardDiv.addClass('card');
+
+        $cardDiv.append($infoDiv);
+
+        $('main').append($cardDiv);
+      });
   });
 
-}
+} // end makeAjaxRequest
 
 
 

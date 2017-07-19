@@ -1,0 +1,17 @@
+p {
+  margin-bottom: .25vmin;
+}
+
+.card {
+  border: 1px solid #cccccc;
+  position: relative;
+  display: inline-block;
+  width: 350px;
+  margin: 1vmin;
+}
+
+.album-cover {
+  width: 100px;
+  height: 100px;
+  margin-bottom: .5vmin;
+}
