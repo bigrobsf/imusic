@@ -65,6 +65,7 @@ function makeAjaxRequest(searchTerm) {
           albumInfo.artworkUrl = result.artworkUrl100;
           albumInfo.releaseDate = result.releaseDate.split('T')[0];
           albumInfo.trackCount = result.trackCount;
+          albumInfo.id = result.collectionId;
           // albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
           albumInfo.tracksUrl = result.collectionViewUrl;
           albums.push(albumInfo);
@@ -82,7 +83,7 @@ function makeAjaxRequest(searchTerm) {
       // console.log(albums);
       // populate DOM with album info
       albums.forEach((album) => {
-        console.log(album);
+        // console.log(album);
         let $infoDiv = $('<div>');
         $infoDiv.addClass('album');
 
@@ -102,24 +103,30 @@ function makeAjaxRequest(searchTerm) {
 
         let $numTracksP = $('<p>');
         $numTracksP.text('Tracks: ' + album.trackCount);
+        $numTracksP.on('click', (event) => {
+          event.preventDefault();
+          getTracks(album.id);
+        });
 
-        $infoDiv.append($albumImg);
+        let $link = $('<a>');
+        $link.attr('href', album.tracksUrl);
+        $link.attr('target', '_blank');
+
+        $link.append($albumImg);
+
+        $infoDiv.append($link);
         $infoDiv.append($albumP);
         $infoDiv.append($artistP);
         $infoDiv.append($dateP);
         $infoDiv.append($numTracksP);
 
-        let $link = $('<a>');
-        $link.attr('href', album.tracksUrl);
-        $link.attr('target', '_blank');
-        $link.append($infoDiv);
 
         let $cardDiv = $('<div>');
         $cardDiv.addClass('card');
 
-        $cardDiv.append($link);
+        // $cardDiv.append($link);
 
-        // $cardDiv.append($infoDiv);
+        $cardDiv.append($infoDiv);
 
         $('main').append($cardDiv);
       });
@@ -131,7 +138,43 @@ function makeAjaxRequest(searchTerm) {
   });
 } // end makeAjaxRequest
 
+function getTracks(id, event) {
+  // performs ajax request to get artist id for artist searched
+  $.ajax({
+    url: `https://itunes.apple.com/lookup?id=${id}&entity=song`,
+    jsonp: "callback",
+    dataType: "jsonp"
+  }).then((trackData) => {
+    // console.log('Tracks: ', trackData);
+    let tracks = [];
 
+    trackData.results.forEach((track) => {
+      if (track.kind === 'song') {
+        let trackInfo = {};
+
+        trackInfo.name = track.trackName;
+        trackInfo.artist = track.artistName;
+        trackInfo.previewUrl = track.previewUrl;
+        trackInfo.releaseDate = track.trackViewUrl;
+        trackInfo.trackNumber = track.trackNumber;
+        tracks.push(trackInfo);
+      }
+    });
+
+    // sort by track number
+    tracks.sort((a, b) => {
+      var eleA = a.trackNumber;
+      var eleB = b.trackNumber;
+
+      return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
+    });
+
+    tracks.forEach((track) => {
+      console.log(track);
+    });
+
+  });
+}
 
 
 
