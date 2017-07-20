@@ -39,92 +39,96 @@ function getSearchTerm() {
 function makeAjaxRequest(searchTerm) {
   // performs ajax request to get artist id for artist searched
   $.ajax({
-      url: `https://itunes.apple.com/search?term=${searchTerm}&entity=musicArtist&limit=1`,
-      jsonp: "callback",
-      dataType: "jsonp"
+    url: `https://itunes.apple.com/search?term=${searchTerm}&entity=musicArtist&limit=1`,
+    jsonp: "callback",
+    dataType: "jsonp"
   }).then((artist) => {
 
     let artistId = artist.results[0].artistId;
 
     // performs ajax request to get albums for artist id found above
     $.ajax({
-        url: `https://itunes.apple.com/lookup?id=${artistId}&entity=album`,
-        jsonp: "callback",
-        dataType: "jsonp"
+      url: `https://itunes.apple.com/lookup?id=${artistId}&entity=album`,
+      jsonp: "callback",
+      dataType: "jsonp"
     }).then((data) => {
-        console.log('data: ', data);
-        let albums = [];
+      console.log('data: ', data);
+      let albums = [];
 
-        data.results.forEach((result) => {
-          // eliminate singles with only one mix
-          if (result.trackCount > 1) {
-            let albumInfo = {};
+      data.results.forEach((result) => {
+        // eliminate singles with only one mix
+        if (result.trackCount > 1) {
+          let albumInfo = {};
 
-            albumInfo.name = result.collectionName;
-            albumInfo.artist = result.artistName;
-            albumInfo.artworkUrl = result.artworkUrl100;
-            albumInfo.releaseDate = result.releaseDate.split('T')[0];
-            albumInfo.trackCount = result.trackCount;
-            // albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
-            albumInfo.tracksUrl = result.collectionViewUrl;
-            albums.push(albumInfo);
-          }
-        });
+          albumInfo.name = result.collectionName;
+          albumInfo.artist = result.artistName;
+          albumInfo.artworkUrl = result.artworkUrl100;
+          albumInfo.releaseDate = result.releaseDate.split('T')[0];
+          albumInfo.trackCount = result.trackCount;
+          // albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
+          albumInfo.tracksUrl = result.collectionViewUrl;
+          albums.push(albumInfo);
+        }
+      });
 
-        // sort by release date
-        albums.sort((b, a) => {
-          var eleA = a.releaseDate;
-          var eleB = b.releaseDate;
+      // sort by release date
+      albums.sort((b, a) => {
+        var eleA = a.releaseDate;
+        var eleB = b.releaseDate;
 
-          return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
-        });
+        return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
+      });
 
-        // console.log(albums);
-        // populate DOM with album info
-        albums.forEach((album) => {
-          console.log(album);
-          let $infoDiv = $('<div>');
-          $infoDiv.addClass('album');
+      // console.log(albums);
+      // populate DOM with album info
+      albums.forEach((album) => {
+        console.log(album);
+        let $infoDiv = $('<div>');
+        $infoDiv.addClass('album');
 
-          let $albumImg = $('<img>');
-          $albumImg.addClass('album-cover');
-          $albumImg.attr('src', album.artworkUrl);
+        let $albumImg = $('<img>');
+        $albumImg.addClass('album-cover');
+        $albumImg.attr('src', album.artworkUrl);
 
-          let $albumP = $('<p>');
-          $albumP.text(album.name);
-          $albumP.css('font-weight', 'bold');
+        let $albumP = $('<p>');
+        $albumP.text(album.name);
+        $albumP.css('font-weight', 'bold');
 
-          let $artistP = $('<p>');
-          $artistP.text(album.artist);
+        let $artistP = $('<p>');
+        $artistP.text(album.artist);
 
-          let $dateP = $('<p>');
-          $dateP.text('Released: ' + album.releaseDate);
+        let $dateP = $('<p>');
+        $dateP.text('Released: ' + album.releaseDate);
 
-          let $numTracksP = $('<p>');
-          $numTracksP.text('Tracks: ' + album.trackCount);
+        let $numTracksP = $('<p>');
+        $numTracksP.text('Tracks: ' + album.trackCount);
 
-          $infoDiv.append($albumImg);
-          $infoDiv.append($albumP);
-          $infoDiv.append($artistP);
-          $infoDiv.append($dateP);
-          $infoDiv.append($numTracksP);
+        $infoDiv.append($albumImg);
+        $infoDiv.append($albumP);
+        $infoDiv.append($artistP);
+        $infoDiv.append($dateP);
+        $infoDiv.append($numTracksP);
 
-          let $link = $('<a>');
-          $link.attr('href', album.tracksUrl);
-          $link.attr('target', '_blank');
-          $link.append($infoDiv);
+        let $link = $('<a>');
+        $link.attr('href', album.tracksUrl);
+        $link.attr('target', '_blank');
+        $link.append($infoDiv);
 
-          let $cardDiv = $('<div>');
-          $cardDiv.addClass('card');
+        let $cardDiv = $('<div>');
+        $cardDiv.addClass('card');
 
-          $cardDiv.append($link);
+        $cardDiv.append($link);
 
-          // $cardDiv.append($infoDiv);
+        // $cardDiv.append($infoDiv);
 
-          $('main').append($cardDiv);
-        });
-    }); // end ajax to get albums
-  }); // end ajax to get artist id
+        $('main').append($cardDiv);
+      });
+    }).catch((error) => {
+      console.log('Album retrieval error: ', error);
+    });
+  }).catch((error) => {
+    console.log('Artist ID retrieval error:', error);
+  });
 } // end makeAjaxRequest
 
 
