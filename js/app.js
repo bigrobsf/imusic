@@ -80,7 +80,7 @@ function makeAjaxRequest(searchTerm) {
         });
 
         // console.log(albums);
-
+        // populate DOM with album info
         albums.forEach((album) => {
           console.log(album);
           let $infoDiv = $('<div>');
@@ -123,8 +123,8 @@ function makeAjaxRequest(searchTerm) {
 
           $('main').append($cardDiv);
         });
-    });
-  });
+    }); // end ajax to get albums
+  }); // end ajax to get artist id
 } // end makeAjaxRequest
 
 
