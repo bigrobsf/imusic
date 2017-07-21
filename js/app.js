@@ -106,7 +106,7 @@ function makeAjaxRequest(searchTerm) {
         $numTracksP.addClass('tracks');
         $numTracksP.on('click', (event) => {
           event.preventDefault();
-          getTracks(album.id);
+          getTracks(album.id, event);
         });
 
         let $link = $('<a>');
@@ -129,7 +129,8 @@ function makeAjaxRequest(searchTerm) {
 
         $cardDiv.append($infoDiv);
 
-        $('main').append($cardDiv);
+        // $('main').append($cardDiv);
+        $('.row').append($cardDiv);
       });
     }).catch((error) => {
       console.log('Album retrieval error: ', error);
@@ -146,7 +147,7 @@ function getTracks(id, event) {
     jsonp: "callback",
     dataType: "jsonp"
   }).then((trackData) => {
-    // console.log('Tracks: ', trackData);
+
     let tracks = [];
 
     trackData.results.forEach((track) => {
@@ -170,9 +171,21 @@ function getTracks(id, event) {
       return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
     });
 
+    let $tracksDiv = $('<div>');
+    $tracksDiv.addClass('track-names');
+
+    let $trackList = $('<ol>');
+    $tracksDiv.append($trackList);
+
     tracks.forEach((track) => {
+      let $trackItem = $('<li>');
+      $trackItem.text(track.name);
+      $trackList.append($trackItem);
+
       console.log(track);
     });
+
+    $(event.target).parent().append($tracksDiv);
 
   });
 }
