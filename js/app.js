@@ -93,7 +93,7 @@ function makeAjaxRequest(searchTerm) {
 
         let $albumP = $('<p>');
         $albumP.text(album.name);
-        $albumP.css('font-weight', 'bold');
+        $albumP.addClass('album-name');
 
         let $artistP = $('<p>');
         $artistP.text(album.artist);
@@ -103,6 +103,7 @@ function makeAjaxRequest(searchTerm) {
 
         let $numTracksP = $('<p>');
         $numTracksP.text('Tracks: ' + album.trackCount);
+        $numTracksP.addClass('tracks');
         $numTracksP.on('click', (event) => {
           event.preventDefault();
           getTracks(album.id);

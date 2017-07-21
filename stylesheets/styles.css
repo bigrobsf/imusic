@@ -1,22 +1,36 @@
+h1 {
+  color: #c2185b;
+}
+
+form {
+  margin-bottom: 2vmin;
+  text-align: center;
+}
+
 p {
   margin-bottom: .25vmin;
 }
 
 img {
-  border: 1px solid #eeeeee;
+  border: 2px solid #1976d2;
 }
 
 img:hover {
-  border: 1px solid #cccccc;
+  border: 2px solid #c2185b;
   -webkit-box-shadow: 0 10px 6px -6px #777;
   -moz-box-shadow: 0 10px 6px -6px #777;
   box-shadow: 0 10px 6px -6px #777;
+}
+
+.album > p {
+  color: #1976d2;
 }
 
 .card {
   background: #eeeeee;
   position: relative;
   display: inline-block;
+  vertical-align: top;
   width: 250px;
   margin: 1vmin;
   padding: 1vmin;
@@ -27,6 +41,19 @@ img:hover {
   width: 100px;
   height: 100px;
   margin-bottom: .5vmin;
+}
+
+.album-name {
+  font-weight: bold;
+}
+
+p.tracks {
+  color: #c2185b;
+}
+
+.tracks:hover {
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .album {
