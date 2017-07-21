@@ -17,6 +17,19 @@ ol > li {
   text-align: left;
 }
 
+li > a {
+  color: #1976d2;
+}
+
+li > a:hover {
+  color: #c2185b;
+  text-decoration: none;
+}
+
+li > a:visited {
+  text-decoration: none;
+}
+
 img {
   border: 2px solid #1976d2;
 }
@@ -68,7 +81,7 @@ p.tracks {
 }
 
 .track-names {
-  border: 1px solid #f8bbd0;
+  border: 1px solid #c2185b;
   margin-top: 1vmin;
-  padding-top: 1vmin;
+  padding-top: 2vmin;
 }

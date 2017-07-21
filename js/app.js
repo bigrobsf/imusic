@@ -157,7 +157,7 @@ function getTracks(id, event) {
         trackInfo.name = track.trackName;
         trackInfo.artist = track.artistName;
         trackInfo.previewUrl = track.previewUrl;
-        trackInfo.releaseDate = track.trackViewUrl;
+        trackInfo.trackViewUrl = track.trackViewUrl;
         trackInfo.trackNumber = track.trackNumber;
         tracks.push(trackInfo);
       }
@@ -179,10 +179,13 @@ function getTracks(id, event) {
 
     tracks.forEach((track) => {
       let $trackItem = $('<li>');
-      $trackItem.text(track.name);
+      let $trackLink = $('<a>');
+      // $trackLink.attr('href', track.trackViewUrl);
+      $trackLink.attr('href', track.previewUrl);
+      $trackLink.attr('target', '_blank');
+      $trackLink.text(track.name);
+      $trackItem.append($trackLink);
       $trackList.append($trackItem);
-
-      console.log(track);
     });
 
     $(event.target).parent().append($tracksDiv);
