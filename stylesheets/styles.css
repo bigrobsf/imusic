@@ -34,6 +34,8 @@ img:hover {
 
 .card {
   background: #eeeeee;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -67,4 +69,6 @@ p.tracks {
 
 .track-names {
   border: 1px solid #f8bbd0;
+  margin-top: 1vmin;
+  padding-top: 1vmin;
 }
