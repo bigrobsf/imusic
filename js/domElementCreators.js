@@ -52,7 +52,8 @@ function createAlbumCards(albums) {
 }
 
 // =============================================================================
-// populate album card div with track info
+// populate album card div with track info and add listener to "close" track
+// list
 function createTrackDiv(tracks) {
   let $tracksDiv = $('<div>');
   $tracksDiv.addClass('track-names');
