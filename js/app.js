@@ -21,7 +21,7 @@ function main() {
   let searchTerm = getSearchTerm();
   console.log("Search term is: ", searchTerm);
   if (searchTerm) {
-    $('main').children().remove();
+    $('.row').children().remove();
     makeAjaxRequest(searchTerm);
   }
 }
@@ -66,7 +66,6 @@ function makeAjaxRequest(searchTerm) {
           albumInfo.releaseDate = result.releaseDate.split('T')[0];
           albumInfo.trackCount = result.trackCount;
           albumInfo.id = result.collectionId;
-          // albumInfo.tracksUrl = `https://itunes.apple.com/lookup?id=${result.collectionId}&entity=song`;
           albumInfo.tracksUrl = result.collectionViewUrl;
           albums.push(albumInfo);
         }
@@ -80,10 +79,11 @@ function makeAjaxRequest(searchTerm) {
         return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
       });
 
+      // createAlbumCards(albums);
+
       // console.log(albums);
       // populate DOM with album info
       albums.forEach((album) => {
-        // console.log(album);
         let $infoDiv = $('<div>');
         $infoDiv.addClass('album');
 
@@ -121,15 +121,10 @@ function makeAjaxRequest(searchTerm) {
         $infoDiv.append($dateP);
         $infoDiv.append($numTracksP);
 
-
         let $cardDiv = $('<div>');
         $cardDiv.addClass('card');
 
-        // $cardDiv.append($link);
-
         $cardDiv.append($infoDiv);
-
-        // $('main').append($cardDiv);
         $('.row').append($cardDiv);
       });
     }).catch((error) => {
@@ -175,13 +170,24 @@ function getTracks(id, event) {
     $tracksDiv.addClass('track-names');
 
     let $trackList = $('<ol>');
+
+    // $trackList.attr('data-target', '#preview');
+    // $trackList.attr('data-toggle', 'modal');
+    // $trackList.addClass('track-modal');
+    //
+    // $('.track-modal').on('click', function(event){
+    //   console.log('TRACK EVENT:', event.target);
+    //   event.preventDefault();
+    //   $('#preview').modal('show').find('.modal-body').load($(this).attr('href'));
+    // });
+
     $tracksDiv.append($trackList);
 
     tracks.forEach((track) => {
       let $trackItem = $('<li>');
       let $trackLink = $('<a>');
-      // $trackLink.attr('href', track.trackViewUrl);
-      $trackLink.attr('href', track.previewUrl);
+      $trackLink.attr('href', track.trackViewUrl);
+      // $trackLink.attr('href', track.previewUrl);
       $trackLink.attr('target', '_blank');
       $trackLink.text(track.name);
       $trackItem.append($trackLink);
