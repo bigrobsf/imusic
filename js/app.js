@@ -16,28 +16,35 @@ $(function() {
   });
 });
 
-// main
+// =============================================================================
+// calls search term function, clears results of previous search, launches ajax
+// request for new search
 function main() {
   let searchTerm = getSearchTerm();
-  console.log("Search term is: ", searchTerm);
+
   if (searchTerm) {
     $('.row').children().remove();
     makeAjaxRequest(searchTerm);
   }
 }
 
-// gets the search term entered into the search field, clears it, and restores focus
+// =============================================================================
+// gets the search term entered into the search field, clears it, and restores
+// focus
 function getSearchTerm() {
   let searchTerm = $('#search').val();
+
   $('#search').val('');
   $('#search').focus();
+
   return searchTerm;
 }
 
-
-
+// =============================================================================
+// makes ajax requests for artist id and related albums and populates ablums
+// array with retrieved information
 function makeAjaxRequest(searchTerm) {
-  // performs ajax request to get artist id for artist searched
+  // gets artist id for artist searched
   $.ajax({
     url: `https://itunes.apple.com/search?term=${searchTerm}&entity=musicArtist&limit=1`,
     jsonp: "callback",
@@ -46,13 +53,13 @@ function makeAjaxRequest(searchTerm) {
 
     let artistId = artist.results[0].artistId;
 
-    // performs ajax request to get albums for artist id found above
+    // gets albums for artist id found above
     $.ajax({
       url: `https://itunes.apple.com/lookup?id=${artistId}&entity=album`,
       jsonp: "callback",
       dataType: "jsonp"
     }).then((data) => {
-      console.log('data: ', data);
+
       let albums = [];
 
       data.results.forEach((result) => {
@@ -79,64 +86,20 @@ function makeAjaxRequest(searchTerm) {
         return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
       });
 
-      // createAlbumCards(albums);
+      createAlbumCards(albums);
 
-      // console.log(albums);
-      // populate DOM with album info
-      albums.forEach((album) => {
-        let $infoDiv = $('<div>');
-        $infoDiv.addClass('album');
-
-        let $albumImg = $('<img>');
-        $albumImg.addClass('album-cover');
-        $albumImg.attr('src', album.artworkUrl);
-
-        let $albumP = $('<p>');
-        $albumP.text(album.name);
-        $albumP.addClass('album-name');
-
-        let $artistP = $('<p>');
-        $artistP.text(album.artist);
-
-        let $dateP = $('<p>');
-        $dateP.text('Released: ' + album.releaseDate);
-
-        let $numTracksP = $('<p>');
-        $numTracksP.text('Tracks: ' + album.trackCount);
-        $numTracksP.addClass('tracks');
-        $numTracksP.on('click', (event) => {
-          event.preventDefault();
-          getTracks(album.id, event);
-        });
-
-        let $link = $('<a>');
-        $link.attr('href', album.tracksUrl);
-        $link.attr('target', '_blank');
-
-        $link.append($albumImg);
-
-        $infoDiv.append($link);
-        $infoDiv.append($albumP);
-        $infoDiv.append($artistP);
-        $infoDiv.append($dateP);
-        $infoDiv.append($numTracksP);
-
-        let $cardDiv = $('<div>');
-        $cardDiv.addClass('card');
-
-        $cardDiv.append($infoDiv);
-        $('.row').append($cardDiv);
-      });
     }).catch((error) => {
       console.log('Album retrieval error: ', error);
     });
   }).catch((error) => {
     console.log('Artist ID retrieval error:', error);
   });
-} // end makeAjaxRequest
+}
 
+// =============================================================================
+// performs ajax request to get artist id for artist searched and populates
+// tracks array with track information
 function getTracks(id, event) {
-  // performs ajax request to get artist id for artist searched
   $.ajax({
     url: `https://itunes.apple.com/lookup?id=${id}&entity=song`,
     jsonp: "callback",
@@ -166,36 +129,12 @@ function getTracks(id, event) {
       return eleA > eleB ? 1 : eleA < eleB ? -1 : 0;
     });
 
-    let $tracksDiv = $('<div>');
-    $tracksDiv.addClass('track-names');
+    let $tracksDiv = createTrackDiv(tracks, event);
 
-    let $trackList = $('<ol>');
-
-    // $trackList.attr('data-target', '#preview');
-    // $trackList.attr('data-toggle', 'modal');
-    // $trackList.addClass('track-modal');
-    //
-    // $('.track-modal').on('click', function(event){
-    //   console.log('TRACK EVENT:', event.target);
-    //   event.preventDefault();
-    //   $('#preview').modal('show').find('.modal-body').load($(this).attr('href'));
-    // });
-
-    $tracksDiv.append($trackList);
-
-    tracks.forEach((track) => {
-      let $trackItem = $('<li>');
-      let $trackLink = $('<a>');
-      $trackLink.attr('href', track.trackViewUrl);
-      // $trackLink.attr('href', track.previewUrl);
-      $trackLink.attr('target', '_blank');
-      $trackLink.text(track.name);
-      $trackItem.append($trackLink);
-      $trackList.append($trackItem);
-    });
-
-    $(event.target).parent().append($tracksDiv);
-
+    // only append div with list of tracks if not already present
+    if ($(event.target).parent().has('div').length === 0) {
+      $(event.target).parent().append($tracksDiv);
+    }
   });
 }
 

@@ -1,5 +1,4 @@
 h1 {
-  color: #c2185b;
   font-weight: bold;
 }
 
@@ -17,7 +16,7 @@ ol > li {
   text-align: left;
 }
 
-li > a {
+li > a, .album > p {
   color: #1976d2;
 }
 
@@ -39,10 +38,6 @@ img:hover {
   -webkit-box-shadow: 0 10px 6px -6px #f8bbd0;
   -moz-box-shadow: 0 10px 6px -6px #f8bbd0;
   box-shadow: 0 10px 6px -6px #f8bbd0;
-}
-
-.album > p {
-  color: #1976d2;
 }
 
 .card {
@@ -71,11 +66,11 @@ img:hover {
   font-weight: bold;
 }
 
-p.tracks {
+h1, p.tracks, .remove-tracks {
   color: #c2185b;
 }
 
-.tracks:hover {
+.tracks:hover, .remove-tracks:hover {
   font-weight: 500;
   cursor: pointer;
 }
