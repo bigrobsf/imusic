@@ -58,17 +58,37 @@ function createTrackDiv(tracks) {
   let $tracksDiv = $('<div>');
   $tracksDiv.addClass('track-names');
 
-  let $trackList = $('<ol>');
+  if (tracks.length) {
+    let $trackList = $('<ol>');
 
-  // $trackList.attr('data-target', '#preview');
-  // $trackList.attr('data-toggle', 'modal');
-  // $trackList.addClass('track-modal');
-  //
-  // $('.track-modal').on('click', function(event){
-  //   console.log('TRACK EVENT:', event.target);
-  //   event.preventDefault();
-  //   $('#preview').modal('show').find('.modal-body').load($(this).attr('href'));
-  // });
+    // $trackList.attr('data-target', '#preview');
+    // $trackList.attr('data-toggle', 'modal');
+    // $trackList.addClass('track-modal');
+    //
+    // $('.track-modal').on('click', function(event){
+    //   console.log('TRACK EVENT:', event.target);
+    //   event.preventDefault();
+    //   $('#preview').modal('show').find('.modal-body').load($(this).attr('href'));
+    // });
+
+    $tracksDiv.append($trackList);
+
+    tracks.forEach((track) => {
+      let $trackItem = $('<li>');
+      let $trackLink = $('<a>');
+      $trackLink.attr('href', track.trackViewUrl);
+      // $trackLink.attr('href', track.previewUrl);
+      $trackLink.attr('target', '_blank');
+      $trackLink.text(track.name);
+      $trackItem.append($trackLink);
+      $trackList.append($trackItem);
+    });
+
+  } else {
+    let $noTracksP = $('<p>');
+    $noTracksP.text('Track list unavailable.');
+    $tracksDiv.append($noTracksP);
+  }
 
   let $removeP = $('<p>');
   $removeP.text('CLOSE');
@@ -78,19 +98,7 @@ function createTrackDiv(tracks) {
     $('.track-names').remove();
   });
 
-  $tracksDiv.append($trackList);
   $tracksDiv.append($removeP);
-
-  tracks.forEach((track) => {
-    let $trackItem = $('<li>');
-    let $trackLink = $('<a>');
-    $trackLink.attr('href', track.trackViewUrl);
-    // $trackLink.attr('href', track.previewUrl);
-    $trackLink.attr('target', '_blank');
-    $trackLink.text(track.name);
-    $trackItem.append($trackLink);
-    $trackList.append($trackItem);
-  });
 
   return $tracksDiv;
 }

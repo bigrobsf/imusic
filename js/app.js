@@ -105,7 +105,7 @@ function getTracks(id, event) {
     jsonp: "callback",
     dataType: "jsonp"
   }).then((trackData) => {
-
+    console.log(trackData);
     let tracks = [];
 
     trackData.results.forEach((track) => {
@@ -135,6 +135,8 @@ function getTracks(id, event) {
     if ($(event.target).parent().has('div').length === 0) {
       $(event.target).parent().append($tracksDiv);
     }
+  }).catch((error) => {
+    console.log('Track retrieval error: ', error);
   });
 }
 

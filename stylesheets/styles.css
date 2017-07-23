@@ -27,6 +27,7 @@ header, footer {
 h1 {
   padding-top: 2vmin;
   font-weight: bold;
+  font-size: 5vmin;
 }
 
 form {
