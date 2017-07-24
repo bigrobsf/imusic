@@ -44,15 +44,15 @@ function getSearchTerm() {
 // makes ajax requests for artist id and related albums and populates ablums
 // array with retrieved information
 function makeAjaxRequest(searchTerm) {
+  console.log('MAKING AJAX REQUEST FOR: ', searchTerm);
   // gets artist id for artist searched
   $.ajax({
     url: `https://itunes.apple.com/search?term=${searchTerm}&entity=musicArtist&limit=1`,
     jsonp: "callback",
     dataType: "jsonp"
   }).then((artist) => {
-
     let artistId = artist.results[0].artistId;
-
+    console.log('ARTIST ID: ', artistId);
     // gets albums for artist id found above
     $.ajax({
       url: `https://itunes.apple.com/lookup?id=${artistId}&entity=album`,
