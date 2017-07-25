@@ -6,7 +6,7 @@ Each album includes the number of tracks, which when clicked will display the tr
 
 ## Known Bugs
 
-1. If the page has loaded in the browser for the first time, or has had a "hard refresh", the ajax call for the artist ID does not appear to execute as nothing is returned, even an error. Subsequent searches work as expected.
+1. If the page has loaded in the browser for the first time, or has had a "hard reload", the ajax call for the artist ID does not appear to execute as nothing is returned, even an error. Subsequent searches work as expected.
 
 ## Pending Features
 
