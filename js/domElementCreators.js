@@ -61,27 +61,20 @@ function createTrackDiv(tracks) {
   if (tracks.length) {
     let $trackList = $('<ol>');
 
-    // $trackList.attr('data-target', '#preview');
-    // $trackList.attr('data-toggle', 'modal');
-    // $trackList.addClass('track-modal');
-    //
-    // $('.track-modal').on('click', function(event){
-    //   console.log('TRACK EVENT:', event.target);
-    //   event.preventDefault();
-    //   $('#preview').modal('show').find('.modal-body').load($(this).attr('href'));
-    // });
 
     $tracksDiv.append($trackList);
 
     tracks.forEach((track) => {
       let $trackItem = $('<li>');
-      let $trackLink = $('<a>');
-      $trackLink.attr('href', track.trackViewUrl);
-      // $trackLink.attr('href', track.previewUrl);
-      $trackLink.attr('target', '_blank');
-      $trackLink.text(track.name);
-      $trackItem.append($trackLink);
+      $trackItem.attr('href', track.previewUrl);
+      $trackItem.text(track.name);
       $trackList.append($trackItem);
+    });
+
+    $trackList.on('click', (event) => {
+      console.log('TRACK EVENT:', event.target);
+      $('.modal-source').attr('src', $(event.target).attr('href'));
+      $('#preview').modal('show');
     });
 
   } else {

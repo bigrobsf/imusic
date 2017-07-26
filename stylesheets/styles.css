@@ -49,16 +49,17 @@ ol > li {
   text-align: left;
 }
 
-li > a, .album > p {
+li, .album > p {
   color: #1976d2;
 }
 
-li > a:hover {
+li:hover {
   color: #c2185b;
+  cursor: pointer;
   text-decoration: none;
 }
 
-li > a:visited {
+li:visited {
   text-decoration: none;
 }
 
