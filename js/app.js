@@ -9,10 +9,9 @@
 $(function() {
   $('#search').focus();
 
-  $('#search-btn').on('click', main);
-
-  $('#search').on('keyup', (event) => {
-    if (event.keyCode === '13') main();
+  $('form').on('submit', function(event) {
+    event.preventDefault();
+    main();
   });
 });
 
@@ -52,7 +51,7 @@ function makeAjaxRequest(searchTerm) {
     dataType: "jsonp"
   }).then((artist) => {
     let artistId = artist.results[0].artistId;
-    console.log('ARTIST ID: ', artistId);
+    // console.log('ARTIST ID: ', artistId);
     // gets albums for artist id found above
     $.ajax({
       url: `https://itunes.apple.com/lookup?id=${artistId}&entity=album`,
@@ -105,7 +104,7 @@ function getTracks(id, event) {
     jsonp: "callback",
     dataType: "jsonp"
   }).then((trackData) => {
-    console.log(trackData);
+    // console.log(trackData);
     let tracks = [];
 
     trackData.results.forEach((track) => {
