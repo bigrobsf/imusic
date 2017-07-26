@@ -72,7 +72,7 @@ function createTrackDiv(tracks) {
     });
 
     $trackList.on('click', (event) => {
-      console.log('TRACK EVENT:', event.target);
+      // console.log('TRACK EVENT:', event.target);
       $('.modal-source').attr('src', $(event.target).attr('href'));
       $('#preview').modal('show');
     });
