@@ -9,7 +9,7 @@
 $(function() {
   $('#search').focus();
 
-  $('form').on('submit', function(event) {
+  $('form').on('submit', (event) => {
     event.preventDefault();
     main();
   });
