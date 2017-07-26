@@ -5,3 +5,5 @@ We had an assignment to build a little app using jQuery and Ajax as part of the 
 The album information includes the number of tracks, which when clicked will display the track names ordered by track number.
 
 Finally, when the user selects an album's track name, a modal will pop up that plays a preview of the track from iTunes.
+
+The design is responsive for use on mobile devices.
